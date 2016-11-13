@@ -1,6 +1,6 @@
 var electron = require('electron');
 var app = electron.app;
-var icon_p = './nocover.png';
+var icon_p = __dirname+'/nocover.png';
 var BrowserWindow = electron.BrowserWindow;
 app.on('browser-window-created', function(e,window){
       window.setMenu(null);
