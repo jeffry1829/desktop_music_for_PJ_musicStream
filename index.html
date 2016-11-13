@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-  </body>
-
-  <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
-  </script>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="http://cdn.rawgit.com/TeaMeow/TocasUI/master/dist/tocas.min.css">
+	<title>Desktop music - Produced by petjelinux</title>
+	<script>
+		window.$ = window.jQuery = require('jquery');
+		var c_p = './config.json';
+		var jsonfile = require('jsonfile');
+		try{	
+			var config = jsonfile.readFileSync(c_p);
+		}catch(e){
+			console.log(e.message);
+			console.log(e.stack);
+		}
+		$(document).ready(function(){
+			$('#main-frame').attr('src', config.url);
+			$('#url-submit-button').click(function(){
+				config.url = $('#url-input').val();
+				$('#main-frame').attr('src', config.url);
+				try{
+					jsonfile.writeFileSync(c_p, config);
+				}catch(e){
+					console.log(e.message);
+					console.log(e.stack);
+				}
+			});
+		});
+    </script>
+</head>
+<body>
+	<div class="ts grid">
+		<iframe class="ten wide column" id="main-frame"></iframe>
+		<div class="six wide column">
+			<div class="ts basic input">
+				<input id="url-input" type="text" placeholder="音樂串流網址">
+			</div>
+			<button id="url-submit-button" class="ts icon button">
+    			<i class="icon checkmark"></i>
+			</button>
+		</div>
+	</div>
+</body>
 </html>
