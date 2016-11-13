@@ -8,7 +8,7 @@
 		window.$ = window.jQuery = require('jquery');
 		var c_p = './config.json';
 		var jsonfile = require('jsonfile');
-		try{	
+		try{
 			var config = jsonfile.readFileSync(c_p);
 		}catch(e){
 			console.log(e.message);
@@ -31,8 +31,10 @@
 </head>
 <body>
 	<div class="ts grid">
-		<iframe class="ten wide column" id="main-frame"></iframe>
-		<div class="six wide column">
+		<div class="thirteen wide column">
+			<iframe id="main-frame" style="overflow-y: hidden;" scrolling="yes" height="100%"></iframe>			
+		</div>
+		<div class="three wide column">
 			<div class="ts basic input">
 				<input id="url-input" type="text" placeholder="音樂串流網址">
 			</div>
