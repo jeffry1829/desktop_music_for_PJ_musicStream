@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%">
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="http://cdn.rawgit.com/TeaMeow/TocasUI/master/dist/tocas.min.css">
 	<title>Desktop music - Produced by petjelinux</title>
 	<script>
+		var win = require('electron').remote.getCurrentWindow();
 		window.$ = window.jQuery = require('jquery');
 		var c_p = './config.json';
 		var jsonfile = require('jsonfile');
@@ -26,13 +27,26 @@
 					console.log(e.stack);
 				}
 			});
+
+			var ke = require('key-emit')(document);
+			ke.down.on('insert', function(){
+				win.minimize();
+				win.hide(); // <==== hide + minimize = to tray
+			});
+			ke.down.on('f10', function(){
+				if(win.webContents.isAudioMuted()){
+					win.webContents.setAudioMuted(false)
+				}else{
+					win.webContents.setAudioMuted(true);
+				}
+			});
 		});
     </script>
 </head>
-<body>
-	<div class="ts grid">
+<body style="height: 100%">
+	<div class="ts grid" style="height: 100%">
 		<div class="thirteen wide column">
-			<iframe id="main-frame" style="overflow-y: hidden;" scrolling="yes" height="100%"></iframe>			
+			<iframe id="main-frame" width="100%" height="100%"></iframe>			
 		</div>
 		<div class="three wide column">
 			<div class="ts basic input">
