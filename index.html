@@ -9,6 +9,7 @@
 		window.$ = window.jQuery = require('jquery');
 		var c_p = __dirname+'/config.json';
 		var jsonfile = require('jsonfile');
+		var cpListeners = require(__dirname+'/lib/cp_listeners');
 		try{
 			var config = jsonfile.readFileSync(c_p);
 		}catch(e){
@@ -27,18 +28,22 @@
 					console.log(e.stack);
 				}
 			});
-
-			var ke = require('key-emit')(document);
-			ke.down.on('insert', function(){
-				win.minimize();
-				win.hide(); // <==== hide + minimize = to tray
-			});
-			ke.down.on('f10', function(){
-				if(win.webContents.isAudioMuted()){
-					win.webContents.setAudioMuted(false)
-				}else{
-					win.webContents.setAudioMuted(true);
-				}
+			
+			$('#main-frame').on('load', function(){
+				var ke = require('key-emit')(document);
+				var ke_ = require('key-emit')($('#main-frame').contents()[0]);
+				ke.down.on('insert', function(){
+					win.minimize();
+					win.hide(); // <==== hide + minimize = to tray
+				});
+				ke.down.on('f10', function(){
+					if(win.webContents.isAudioMuted()){
+						win.webContents.setAudioMuted(false)
+					}else{
+						win.webContents.setAudioMuted(true);
+					}
+				});
+				cpListeners(ke.down, ke_.down);
 			});
 		});
     </script>
@@ -51,10 +56,10 @@
 		<div class="three wide column">
 			<div class="ts basic input">
 				<input id="url-input" type="text" placeholder="音樂串流網址">
+				<button id="url-submit-button" class="ts icon button mini compact">
+    				<i class="icon checkmark"></i>
+				</button>
 			</div>
-			<button id="url-submit-button" class="ts icon button">
-    			<i class="icon checkmark"></i>
-			</button>
 		</div>
 	</div>
 </body>
